@@ -26,6 +26,12 @@
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "modify"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

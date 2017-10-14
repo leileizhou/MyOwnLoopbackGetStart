@@ -4,6 +4,7 @@
 'use strict';
 module.exports = function(app) {
   var mysql = app.dataSources.mysqlIDs;
+  return;
   mysql.automigrate('AccessToken', function(err) {
     if (err) throw err;
   });
@@ -18,6 +19,10 @@ module.exports = function(app) {
     Ouser.create([
       {nickname: 'admin',
         email: 'admin@e.com',
+        password: '12345',
+        emailVerified: true,
+      }, {nickname: 'lei',
+        email: 'lei@e.com',
         password: '12345',
         emailVerified: true,
       }], function(err, users) {
