@@ -1,3 +1,4 @@
+// 选择task数据库
 use task;
 
 create table tasks(
