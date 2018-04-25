@@ -13,15 +13,17 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 (function(window, angular, undefined) {
   'use strict';
 
-  var urlBase = "/api";
+  var urlBase = "http://0.0.0.0:80/api";
   var authHeader = 'authorization';
 
   function getHost(url) {
     var m = url.match(/^(?:https?:)?\/\/([^\/]+)/);
     return m ? m[1] : null;
   }
-
-  var urlBaseHost = getHost(urlBase) || location.host;
+  // need to use the urlBase as the base to handle multiple
+  // loopback servers behind a proxy/gateway where the host
+  // would be the same.
+  var urlBaseHost = getHost(urlBase) ? urlBase : location.host;
 
 /**
  * @ngdoc overview
@@ -55,9 +57,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
   module.factory(
     "User",
     [
-      'LoopBackResource', 'LoopBackAuth', '$injector',
-      function(Resource, LoopBackAuth, $injector) {
-        var R = Resource(
+      'LoopBackResource', 'LoopBackAuth', '$injector', '$q',
+      function(LoopBackResource, LoopBackAuth, $injector, $q) {
+        var R = LoopBackResource(
         urlBase + "/Users/:id",
           { 'id': '@id' },
           {
@@ -1057,6 +1059,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
                   LoopBackAuth.currentUserData = response.data;
                   return response.resource;
                 },
+                responseError: function(responseError) {
+                  LoopBackAuth.clearUser();
+                  LoopBackAuth.clearStorage();
+                  return $q.reject(responseError);
+                },
               },
               __isGetCurrentUser__: true,
             },
@@ -1262,7 +1269,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
-             * @name lbServices.User#patchAttributes
+             * @name lbServices.User#prototype$patchAttributes
              * @methodOf lbServices.User
              *
              * @description
@@ -1292,7 +1299,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              * This usually means the response is a `User` object.)
              * </em>
              */
-        R["patchAttributes"] = R["prototype$updateAttributes"];
+        R["prototype$patchAttributes"] = R["prototype$updateAttributes"];
 
         /**
          * @ngdoc method
@@ -1371,9 +1378,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
   module.factory(
     "Task",
     [
-      'LoopBackResource', 'LoopBackAuth', '$injector',
-      function(Resource, LoopBackAuth, $injector) {
-        var R = Resource(
+      'LoopBackResource', 'LoopBackAuth', '$injector', '$q',
+      function(LoopBackResource, LoopBackAuth, $injector, $q) {
+        var R = LoopBackResource(
         urlBase + "/tasks/:id",
           { 'id': '@id' },
           {
@@ -2119,7 +2126,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
-             * @name lbServices.Task#patchAttributes
+             * @name lbServices.Task#prototype$patchAttributes
              * @methodOf lbServices.Task
              *
              * @description
@@ -2149,7 +2156,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              * This usually means the response is a `Task` object.)
              * </em>
              */
-        R["patchAttributes"] = R["prototype$updateAttributes"];
+        R["prototype$patchAttributes"] = R["prototype$updateAttributes"];
 
 
         /**
@@ -2223,9 +2230,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
   module.factory(
     "Leader",
     [
-      'LoopBackResource', 'LoopBackAuth', '$injector',
-      function(Resource, LoopBackAuth, $injector) {
-        var R = Resource(
+      'LoopBackResource', 'LoopBackAuth', '$injector', '$q',
+      function(LoopBackResource, LoopBackAuth, $injector, $q) {
+        var R = LoopBackResource(
         urlBase + "/leaders/:id",
           { 'id': '@id' },
           {
@@ -3004,7 +3011,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
-             * @name lbServices.Leader#patchAttributes
+             * @name lbServices.Leader#prototype$patchAttributes
              * @methodOf lbServices.Leader
              *
              * @description
@@ -3034,7 +3041,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              * This usually means the response is a `Leader` object.)
              * </em>
              */
-        R["patchAttributes"] = R["prototype$updateAttributes"];
+        R["prototype$patchAttributes"] = R["prototype$updateAttributes"];
 
 
         /**
@@ -3072,9 +3079,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
   module.factory(
     "Operator",
     [
-      'LoopBackResource', 'LoopBackAuth', '$injector',
-      function(Resource, LoopBackAuth, $injector) {
-        var R = Resource(
+      'LoopBackResource', 'LoopBackAuth', '$injector', '$q',
+      function(LoopBackResource, LoopBackAuth, $injector, $q) {
+        var R = LoopBackResource(
         urlBase + "/operators/:id",
           { 'id': '@id' },
           {
@@ -3826,7 +3833,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
-             * @name lbServices.Operator#patchAttributes
+             * @name lbServices.Operator#prototype$patchAttributes
              * @methodOf lbServices.Operator
              *
              * @description
@@ -3856,7 +3863,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              * This usually means the response is a `Operator` object.)
              * </em>
              */
-        R["patchAttributes"] = R["prototype$updateAttributes"];
+        R["prototype$patchAttributes"] = R["prototype$updateAttributes"];
 
 
         /**
@@ -3930,9 +3937,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
   module.factory(
     "Ouser",
     [
-      'LoopBackResource', 'LoopBackAuth', '$injector',
-      function(Resource, LoopBackAuth, $injector) {
-        var R = Resource(
+      'LoopBackResource', 'LoopBackAuth', '$injector', '$q',
+      function(LoopBackResource, LoopBackAuth, $injector, $q) {
+        var R = LoopBackResource(
         urlBase + "/Ousers/:id",
           { 'id': '@id' },
           {
@@ -5038,6 +5045,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
                   LoopBackAuth.currentUserData = response.data;
                   return response.resource;
                 },
+                responseError: function(responseError) {
+                  LoopBackAuth.clearUser();
+                  LoopBackAuth.clearStorage();
+                  return $q.reject(responseError);
+                },
               },
               __isGetCurrentUser__: true,
             },
@@ -5243,7 +5255,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
-             * @name lbServices.Ouser#patchAttributes
+             * @name lbServices.Ouser#prototype$patchAttributes
              * @methodOf lbServices.Ouser
              *
              * @description
@@ -5273,7 +5285,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              * This usually means the response is a `Ouser` object.)
              * </em>
              */
-        R["patchAttributes"] = R["prototype$updateAttributes"];
+        R["prototype$patchAttributes"] = R["prototype$updateAttributes"];
 
         /**
          * @ngdoc method
@@ -5401,7 +5413,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
         'request': function(config) {
           // filter out external requests
           var host = getHost(config.url);
-          if (host && host !== urlBaseHost) {
+          if (host && config.url.indexOf(urlBaseHost) === -1) {
             return config;
           }
 

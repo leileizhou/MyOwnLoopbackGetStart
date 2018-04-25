@@ -8,7 +8,7 @@
     "port": 3306,
     "url": "",
     "database": "task",
-    "password": "123qwe",
+    "password": "123236",
     "name": "mysqlIDs",
     "user": "root",
     "connector": "mysql"

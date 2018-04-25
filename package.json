@@ -22,6 +22,9 @@
   "devDependencies": {
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
+    "grunt-docular": "^0.2.4",
+    "grunt-loopback-sdk-angular": "^3.0.0",
+    "grunt-ngdocs": "^0.2.10",
     "nsp": "^2.1.0"
   },
   "repository": {
